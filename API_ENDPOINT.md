@@ -88,21 +88,26 @@ This document lists **all API endpoints**, **assigned modules**, and **developer
 
 ---
 
-## 6️⃣ Branching Rules
+## 6️⃣ Branching & Git Commit Guidelines
 
-- Do not push directly to main.
+### Branch Naming
+- `feature/users` → User & Role Management  
+- `feature/lessons` → Lessons & Lesson Types  
+- `feature/subscriptions` → Subscriptions & Payments  
+- `feature/appointments` → Appointments & Trainers  
 
-- Use one branch per module:
-
-- feature/users → User & Role Management
-
-- feature/lessons → Lessons & Lesson Types
-
-- feature/subscriptions → Subscriptions & Payments
-
-- feature/appointments → Appointments & Trainers
-
-Merge to **develop branch** only after testing.
+### Git Commit Message Rules
+- Use clear, concise, and consistent messages.  
+- **Format:** `<type>: <short description>`  
+- **Type examples:**  
+  - `feat` → new feature  
+  - `fix` → bug fix  
+  - `chore` → maintenance  
+  - `docs` → documentation  
+  - `refactor` → code improvement  
+- **Examples:**  
+  - `feat: add assign-role endpoint`  
+  - `fix: correct lesson completion logic`
 
 ---
 
