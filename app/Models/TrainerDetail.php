@@ -11,7 +11,7 @@ class TrainerDetail extends Model
     use HasFactory;
 
     protected $fillable = [
-        'trainer_id', 'bio', 'description', 'salary', 'branch_location'
+        'trainer_id', 'bio', 'university_name', 'degree', 'city', 'start_date', 'end_date', 'salary', 'branch_location'
     ];
 
     protected $casts = [

@@ -17,14 +17,22 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $appends = ['roleId'];
-
-    public function getRoleAttribute()
-    {
-        return $this->attributes['role_id'];
-    }
-
-    protected $fillable = ['name', 'email', 'password', 'profile_url', 'profile_public_id', 'ph_no', 'date_of_birth'];
+    protected $fillable = [
+        'full_name',
+        'nick_name',
+        'role_id',
+        'email',
+        'password',
+        'profile_url',
+        'profile_public_id',
+        'ph_no_telegram',
+        'ph_no_whatsapp',
+        'date_of_birth',
+        'place_of_birth',
+        'address',
+        'daily_routine_for_weekly',
+        'special_request'
+    ];
 
     protected $hidden = ['password'];
 

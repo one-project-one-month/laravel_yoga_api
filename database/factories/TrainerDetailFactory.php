@@ -12,10 +12,23 @@ class TrainerDetailFactory extends Factory
 
     public function definition()
     {
+        $universities = [
+            'University of Yangon',
+            'Yangon University of Economics',
+            'Technological University',
+            'Dagon University',
+            'East Yangon university',
+            'West Yangon university',
+        ];
+
         return [
             'trainer_id' => User::inRandomOrder()->first()->id ?? User::factory(),
             'bio' => $this->faker->paragraph(),
-            'description' => $this->faker->paragraph(),
+            'university_name' => $this->faker->randomElement($universities),
+            'degree' => $this->faker->paragraph(),
+            'city' => $this->faker->city(),
+            'start_date' => $this->faker->date(),
+            'end_date' => $this->faker->date(),
             'salary' => $this->faker->randomFloat(2, 500, 5000),
             'branch_location' => $this->faker->city(),
         ];

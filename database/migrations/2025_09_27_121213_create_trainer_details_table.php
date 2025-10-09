@@ -10,9 +10,13 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('trainer_id')->constrained('users');
             $table->text('bio');
-            $table->text('description');
-            $table->decimal('salary', 10, 2);
-            $table->string('branch_location');
+            $table->string('university_name');
+            $table->string('degree');
+            $table->string('city');
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->decimal('salary', 10, 2)->nullable();
+            $table->string('branch_location')->nullable();
             $table->timestamps();
         });
     }

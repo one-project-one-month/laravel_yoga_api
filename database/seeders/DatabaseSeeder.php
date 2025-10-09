@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         \App\Models\User::create([
-            'name' => "John Doe",
+            'full_name' => "John Doe",
             'email' => "johndoe@gmail.com",
             'password' => Hash::make('John123456'),
             'role_id' => 1
