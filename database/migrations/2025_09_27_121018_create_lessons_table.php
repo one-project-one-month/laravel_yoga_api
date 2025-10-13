@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->text('description');
             $table->enum('level', ['beginner','intermediate','advanced']);
             $table->string('video_url');
+            $table->string('video_public_id')->nullable();
             $table->foreignId('lesson_type_id')->constrained('lesson_types');
             $table->integer('duration_minutes');
             $table->boolean('is_free')->default(false);

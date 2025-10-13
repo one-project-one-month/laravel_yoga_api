@@ -11,9 +11,13 @@ class Appointment extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'admin_id', 'trainer_id',
-        'appointment_date', 'appointment_fees',
-        'meet_link', 'is_approved', 'is_completed'
+        'user_id',
+        'trainer_id',
+        'appointment_date',
+        'appointment_fees',
+        'meet_link',
+        'is_approved',
+        'is_completed'
     ];
 
     protected $casts = [

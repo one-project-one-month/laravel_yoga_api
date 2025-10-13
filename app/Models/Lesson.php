@@ -13,7 +13,7 @@ class Lesson extends Model
 
     protected $fillable = [
         'title', 'slug', 'description', 'level',
-        'video_url', 'lesson_type_id', 'duration_minutes',
+        'video_url', 'video_public_id', 'lesson_type_id', 'duration_minutes',
         'is_free', 'is_premium', 'trainer_id'
     ];
 

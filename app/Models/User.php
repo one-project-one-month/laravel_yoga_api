@@ -17,7 +17,22 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $fillable = ['name', 'email', 'password', 'avatar','ph_no', 'date_of_birth'];
+    protected $fillable = [
+        'full_name',
+        'nick_name',
+        'role_id',
+        'email',
+        'password',
+        'profile_url',
+        'profile_public_id',
+        'ph_no_telegram',
+        'ph_no_whatsapp',
+        'date_of_birth',
+        'place_of_birth',
+        'address',
+        'daily_routine_for_weekly',
+        'special_request'
+    ];
 
     protected $hidden = ['password'];
 
@@ -45,14 +60,14 @@ class User extends Authenticatable
     public function lessons()
     {
         return $this->belongsToMany(Lesson::class, 'lesson_user')
-                    ->withPivot('is_completed')
-                    ->withTimestamps();
+            ->withPivot('is_completed')
+            ->withTimestamps();
     }
 
     public function subscriptions()
     {
         return $this->belongsToMany(Subscription::class, 'subscription_user')
-                    ->withTimestamps();
+            ->withTimestamps();
     }
 
     public function testimonials()
