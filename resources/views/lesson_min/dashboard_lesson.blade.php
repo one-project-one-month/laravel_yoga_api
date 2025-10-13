@@ -21,7 +21,7 @@
 
 <body class="antialiased font-figtree">
 
-    {{-- MAIN CONTAINER: White background, full screen, responsive padding --}}
+    {{-- MAIN CONTAINER: White background, full screen, responsive paddi --}}
     <div class="min-h-screen bg-white">
         <div class="text-xl font-bold text-gray-800">LOGO</div>
         {{-- Navigation Bar --}}
