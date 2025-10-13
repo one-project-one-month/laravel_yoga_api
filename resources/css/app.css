@@ -1,0 +1,208 @@
+/* The file assumes you've linked it, e.g., via the Laravel/Vite setup
+    as a component of your main 'app.css'.
+*/
+
+/* ==================================== */
+/* 1. Global / Reset Enhancements       */
+/* ==================================== */
+
+/* Smooth scrolling for anchor links */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* Base body background with a subtle texture */
+.min-h-screen.bg-white {
+    /* Subtle gradient for depth, from a very light gray to white */
+    background: linear-gradient(180deg, #f9f9fb 0%, #ffffff 100%);
+}
+
+/* ==================================== */
+/* 2. Navigation Enhancements           */
+/* ==================================== */
+
+/* Make the header slightly sticky and add a backdrop for a "floating" effect */
+header {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+nav {
+    position: relative;
+    height: 100px;
+    width: 500px;
+    background: #ef4444;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+nav>ul {
+    position: relative;
+    display: flex;
+
+}
+
+nav>ul>li {
+    position: relative;
+    list-style-type: none;
+}
+
+nav>ul>li>a {
+    position: relative;
+    width: 100px;
+    height: 100px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+nav>ul>li>a>i{
+    position: absolute;
+    font-size: 34px;
+color: #ffffff;
+}
+nav>ul>li.active>a>i{
+    opacity: 1;
+    pointer-events: auto;
+}
+ul>li>a>i.activeIcon{
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.6s ease;
+    transition-delay: 0.2s;
+}
+nav>ul>.indicator{
+    position: absolute;
+    bottom: -19px;
+    left: 34px;
+    height: 36px;
+    width: 25px;
+    background: #ffffff;
+    border-radius: 70%;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+ul>.indicator::before{
+content: "";
+position: absolute;
+left: -15px;
+bottom: 50%;
+height: 22px;
+width: 20px;
+height: 22px;
+width: 20px;
+background: #ef4444;
+border-bottom-right-radius:20px ;
+box-shadow: 0 10px 0 #ffffff;
+}
+ul>.indicator::after{
+content: "";
+position: absolute;
+right: -15px;
+bottom: 50%;
+height: 22px;
+width: 20px;
+height: 22px;
+width: 20px;
+background:#ef4444;
+border-bottom-left-radius:20px ;
+box-shadow: 0 10px 0 #ffffff;
+}
+
+/* Animation for navigation links */
+.text-sm.font-semibold a {
+    position: relative;
+    /* Create an underline effect */
+}
+
+.text-sm.font-semibold a:not(.bg-red-500)::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background-color: #ef4444;
+
+    transition: width 0.3s ease-out;
+}
+
+.text-sm.font-semibold a:not(.bg-red-500):hover::after {
+    width: 100%;
+}
+
+/* ==================================== */
+/* 3. Hero Section & Call to Action     */
+/* ==================================== */
+
+/* Hero Heading "Glow" */
+.text-6xl.font-extrabold.text-blue-600 {
+    /* Subtle text shadow for a more vibrant, glowing feel */
+    text-shadow: 0 0 5px rgba(37, 99, 235, 0.4);
+    /* Tailwind's blue-600 with transparency */
+}
+
+/* Main CTA Button - Press Effect */
+.bg-blue-600.shadow-lg {
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+
+.bg-blue-600.shadow-lg:active {
+    /* Scale down slightly to simulate a "press" */
+    transform: scale(0.98);
+    /* Lower the shadow to simulate being pressed into the page */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+/* ==================================== */
+/* 4. Graphic Placeholder (The "Coolest" Part) */
+/* ==================================== */
+
+/* Apply a "pulsing" border and a cool angled shadow to the graphic box */
+.bg-gray-100.p-8.rounded-xl {
+    /* Adjust border and shadow to match the Tailwind utility classes */
+    border: 4px solid #d1d5db;
+    /* gray-200 */
+    box-shadow: 10px 10px 0px 0px #2563eb, -10px -10px 0px 0px #ef4444;
+    /* Blue-600 and Red-500 angled shadow */
+    transition: all 0.5s ease-in-out;
+    margin-top: 30px;
+}
+
+/* Hover effect for a subtle 'lift' and shadow shift */
+.bg-gray-100.p-8.rounded-xl:hover {
+    transform: translateY(-5px);
+    /* Lift the box */
+    box-shadow: 15px 15px 0px 0px #2563eb, -15px -15px 0px 0px #ef4444;
+    /* Shift the shadow */
+}
+
+/* Optional: Add a simple animation to the placeholder text */
+.bg-gray-100.p-8 span {
+    animation: fadePulse 3s infinite alternate;
+}
+
+@keyframes fadePulse {
+    0% {
+        opacity: 0.6;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
