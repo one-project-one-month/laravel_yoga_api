@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LessonController;
+use App\Http\Controllers\LessonTrainerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,11 +24,21 @@ Route::get('/', function () {
 
 
 
-Route::get('/dashboard', function () {
-    return view('lesson_min/dashboard_lesson');
+
+
+Route::apiResource('lessons', LessonController::class);
+
+
+// Use a descriptive name for the route group
+Route::controller(LessonTrainerController::class)->group(function () {
+    // List all trainer-lesson type assignments
+    Route::get('lesson-type-assignments', 'index'); 
+    
+    // Create/Attach a trainer to a lesson type
+    Route::post('lesson-type-assignments', 'store'); 
+    
+    // Delete/Detach a trainer from a lesson type (by pivot ID or body params)
+    Route::delete('lesson-type-assignments/{id?}', 'destroy'); 
 });
 
-Route::get('/ab', function () {
-    return view('lesson_min/ab');
-});
 

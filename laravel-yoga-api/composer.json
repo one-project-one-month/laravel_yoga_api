@@ -1,0 +1,40 @@
+{
+    "name": "laravel/yoga-api",
+    "description": "A Laravel API for managing yoga lessons, types, and trainers.",
+    "type": "project",
+    "require": {
+        "php": "^7.3|^8.0",
+        "fideloper/proxy": "^4.4",
+        "fruitcake/laravel-cors": "^2.0",
+        "guzzlehttp/guzzle": "^7.0",
+        "laravel/framework": "^8.0",
+        "laravel/tinker": "^2.0"
+    },
+    "require-dev": {
+        "facade/ignition": "^2.5",
+        "fzaninotto/faker": "^1.9",
+        "mockery/mockery": "^1.4",
+        "phpunit/phpunit": "^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "php artisan package:discover --ansi"
+        ],
+        "post-update-cmd": [
+            "php artisan vendor:publish --tag=laravel-assets --force"
+        ]
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
