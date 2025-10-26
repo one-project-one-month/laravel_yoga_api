@@ -1,14 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
-use App\Http\Resources\SubscriptionResource;
-use App\Http\Resources\SubscriptionUserResource;
+use App\Http\Resources\Dashboard\SubscriptionResource;
 use App\Models\Subscription;
-use App\Models\SubscriptionUser;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Validator;
 
@@ -21,6 +18,7 @@ class SubscriptionController extends Controller
     public function index()
     {
         $subscriptions = Subscription::get();
+
         return $this->successResponse('Subscriptions retrieved successfully', SubscriptionResource::collection($subscriptions), 200);
     }
 
@@ -37,7 +35,7 @@ class SubscriptionController extends Controller
             'lesson_type_id' => 'required|integer|exists:lesson_types,id',
             'duration' => 'required|integer|min:1'
         ]);
-        
+
         if($validator->fails()) {
             return $this->errorResponse($validator->errors(), 422);
         }
@@ -52,7 +50,7 @@ class SubscriptionController extends Controller
             ]);
 
             return $this->successResponse('Subscription created successfully', SubscriptionResource::collection($subscription), 201);
-            
+
         } catch (\Exception $e) {
             return $this->errorResponse('Subscription creation failed:'. $e->getMessage(), 500);
         }
@@ -79,7 +77,7 @@ class SubscriptionController extends Controller
             'lesson_type_id' => 'sometimes|integer|exists:lesson_types,id',
             'duration' => 'sometimes|integer|min:1'
         ]);
-        
+
         if($validator->fails()) {
             return $this->errorResponse($validator->errors(), 422);
         }
@@ -108,45 +106,6 @@ class SubscriptionController extends Controller
 
         } catch (\Exception $e) {
             return $this->errorResponse('Subscription delete failed: '. $e->getMessage(), 500);
-        }
-    }
-
-    public function assignSubscription(Request $request, string $id)
-    {
-        $validator = Validator::make($request->all(), [
-            'subscription_id' => 'required|integer|exists:subscriptions,id',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->errorResponse($validator->errors(), 422);
-        }
-
-        try {
-            $user = User::findOrFail($id);
-            $subscription = Subscription::findOrFail($request->subscription_id);
-
-            // Attach the subscription to the user
-            $user->subscriptions()->attach($subscription->id);
-
-            return $this->successResponse('Subscription attached successfully', [
-                'userId' => $user->id,
-                'subscriptionId' => $subscription->id
-            ], 201);
-
-        } catch (\Exception $e) {
-            return $this->errorResponse('Subscription attach failed: ' . $e->getMessage(), 500);
-        }
-    }
-
-    public function getSubscription(Request $request, string $id)
-    {
-        try {
-            $subscription = SubscriptionUser::where('user_id', $id)->get();
-            
-            return $this->successResponse('Subscriptions retrieved successfully', SubscriptionUserResource::collection($subscription), 200);
-
-        } catch (\Exception $e) {
-            return $this->errorResponse('Subscription retrieved failed: ' . $e->getMessage(), 500);
         }
     }
 }

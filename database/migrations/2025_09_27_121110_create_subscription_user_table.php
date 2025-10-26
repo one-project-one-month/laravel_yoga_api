@@ -10,6 +10,9 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('subscription_id')->constrained('subscriptions');
+            $table->string('status')->default('pending');
+            $table->dateTime('start_date');
+            $table->dateTime('end_date');
             $table->timestamps();
         });
     }

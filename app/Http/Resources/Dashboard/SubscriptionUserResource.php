@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Dashboard;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SubscriptionResource extends JsonResource
+class SubscriptionUserResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,11 +16,9 @@ class SubscriptionResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'description' => $this->description,
-            'price' => $this->price,
-            'lessonTypeId' => $this->lesson_type_id,
-            'duration' => $this->duration,
+            'userId' => $this->user_id,
+            'subscriptionId' => $this->subscription_id,
+            'status' => $this->status,
             'createdAt' => $this->created_at,
             'updatedAt' => $this->updated_at,
         ];

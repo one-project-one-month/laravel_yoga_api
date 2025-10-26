@@ -95,6 +95,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
+        // logger($user);
         $user = User::find($id);
         $user->load(['role', 'trainerDetails']);
 

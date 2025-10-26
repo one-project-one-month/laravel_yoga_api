@@ -17,12 +17,15 @@ class AuthController extends Controller
 {
     use ApiResponse, HasApiTokens, HasFactory, Notifiable;
 
-    //user register
+    /**
+     * POST /api/v1/register
+     * Register new user
+     */
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string',
-            'email' => 'required|email',
+            'fullName' => 'required|string',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6|regex:/[0-9]/|regex:/[a-zA-Z]/',
             'confirmPassword' => 'required|same:password'
         ]);
@@ -32,9 +35,9 @@ class AuthController extends Controller
         }
 
         $user = User::create([
-            'name' => $request->name,
+            'full_name' => $request->fullName,
             'email' => $request->email,
-            'password' => Hash::make($request->password)
+            'password' => Hash::make($request->password),
         ]);
 
         $token = $user->createToken('token')->plainTextToken;
@@ -47,7 +50,10 @@ class AuthController extends Controller
         return $this->successResponse('Register Successfully', new AuthResource($data), 201);
     }
 
-    //user login
+    /**
+     * POST /api/v1/login
+     * user login
+     */
     public function login(Request $request){
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
@@ -78,5 +84,19 @@ class AuthController extends Controller
         ];
 
         return $this->successResponse('Login Successfully', new AuthResource($data), 200);
+    }
+
+    /**
+     * POST /api/v1/logout
+     * User logout
+     */
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Logged out successfully.'
+        ]);
     }
 }

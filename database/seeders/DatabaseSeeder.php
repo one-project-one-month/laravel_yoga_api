@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\Subscription::factory(5)->create();
         \App\Models\Lesson::factory(20)->create();
         \App\Models\TrainerDetail::factory(5)->create();
-        
+
         \App\Models\Testimonial::factory(10)->create();
     }
 }
