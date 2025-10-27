@@ -35,15 +35,15 @@ class LessonController extends Controller
         }
 
         if ($user->role_id == 3) {
-            $hasSubcription = SubscriptionUser::where('status', 'active')
-                ->where('end_date', '>=', now())
-                ->exists();
+            $activeLesson = $user->subscriptions()
+                        ->wherePivot('status', 'Active')
+                        ->wherePivot('end_date', '>=', now())
+                        ->pluck('lesson_type_id');
 
-            if ($hasSubcription) {
-                $lesson = Lesson::where(function ($query) {
-                    $query->where('is_free', true)
-                        ->orWhere('is_premium', true);
-                })->paginate(config('pagination.perPage'));
+            if ($activeLesson->isNotEmpty()) {
+                $lesson = Lesson::where('is_free', true)
+                        ->orWhereIn('lesson_type_id', $activeLesson)
+                        ->paginate(config('pagination.perPage'));
             } else {
                 $lesson = Lesson::where('is_free', true)->paginate(config('pagination.perPage'));
             }
