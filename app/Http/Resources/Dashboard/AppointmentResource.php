@@ -26,7 +26,9 @@ class AppointmentResource extends JsonResource
             'appointmentFees' => $this->appointment_fees,
             'meetLink' => $this->meet_link,
             'isApproved' => $this->is_approved,
-            'isCompleted' => $this->is_completed
+            'isCompleted' => $this->is_completed,
+            'createdAt' => $this->created_at,
+            'updatedAt' => $this->updated_at
         ];
     }
 }

@@ -16,7 +16,9 @@ class TrainerResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'trainerId' => $this->trainer_id
+            'trainerId' => $this->trainer_id,
+            'createdAt' => $this->created_at,
+            'updatedAt' => $this->updated_at
         ];
     }
 }

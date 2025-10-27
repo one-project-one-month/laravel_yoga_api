@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\ForgetPasswordController;
 use App\Http\Controllers\Api\VerifyEmailController;
 use App\Http\Controllers\Client\PaymentHistoryController;
+use App\Http\Controllers\Dashboard\LessonTypeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Dashboard\RoleController;
@@ -50,6 +51,9 @@ Route::prefix('v1/')->group(function () {
 
         //subscription user
         // Route::resource('/subscriptionUsers', SubscriptionUserController::class)->only(['index', 'update']);
+
+        //lesson type route
+        Route::resource('/lesson-types', LessonTypeController::class);
     });
 
     //Trainer
