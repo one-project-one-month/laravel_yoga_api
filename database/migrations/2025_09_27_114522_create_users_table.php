@@ -23,6 +23,9 @@ return new class extends Migration {
             $table->text('daily_routine_for_weekly')->nullable();
             $table->text('special_request')->nullable();
             $table->string('weight')->nullable();
+            $table->string('provider')->nullable();
+            $table->string('provider_id')->nullable();
+            $table->string('provider_token')->nullable();
             $table->boolean('is_verified')->default(false);
             $table->boolean('is_premium')->default(false);
             $table->boolean('is_first_time_appointment')->default(true);

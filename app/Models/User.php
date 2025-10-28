@@ -30,6 +30,9 @@ class User extends Authenticatable
         'date_of_birth',
         'place_of_birth',
         'address',
+        'provider',
+        'provider_id',
+        'provider_token',
         'daily_routine_for_weekly',
         'special_request'
     ];

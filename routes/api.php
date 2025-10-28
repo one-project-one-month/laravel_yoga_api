@@ -1,19 +1,20 @@
 <?php
 
-use App\Http\Controllers\Api\ForgetPasswordController;
-use App\Http\Controllers\Api\VerifyEmailController;
-use App\Http\Controllers\Client\PaymentHistoryController;
-use App\Http\Controllers\Dashboard\LessonController;
-use App\Http\Controllers\Dashboard\LessonTypeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\SocialLoginController;
 use App\Http\Controllers\Dashboard\RoleController;
 use App\Http\Controllers\Dashboard\UserController;
-use App\Http\Controllers\Dashboard\SubscriptionController;
+use App\Http\Controllers\Api\VerifyEmailController;
+use App\Http\Controllers\Dashboard\LessonController;
 use App\Http\Controllers\Dashboard\PaymentController;
 use App\Http\Controllers\Dashboard\TrainerController;
+use App\Http\Controllers\Api\ForgetPasswordController;
+use App\Http\Controllers\Dashboard\LessonTypeController;
+use App\Http\Controllers\Client\PaymentHistoryController;
 use App\Http\Controllers\Dashboard\AppointmentController;
 use App\Http\Controllers\Dashboard\TestimonialController;
+use App\Http\Controllers\Dashboard\SubscriptionController;
 
 //Public route
 Route::post('v1/register', [AuthController::class, 'register']);
@@ -25,6 +26,10 @@ Route::post('v1/verify-otp', [ForgetPasswordController::class, 'verifyOtp']);
 Route::post('v1/reset-password', [ForgetPasswordController::class, 'resetPassword']);
 Route::post('v1/verify-email-otp', [VerifyEmailController::class, 'sendEmailVerifyOtp']);
 Route::post('v1/verify-email', [VerifyEmailController::class, 'verifyEmail']);
+
+Route::get('v1/auth/{provider}/redirect', [SocialLoginController::class, 'redirect']);
+
+Route::get('v1/auth/{provider}/callback', [SocialLoginController::class, 'callback']);
 
 Route::prefix('v1/')->group(function () {
     //Admin
