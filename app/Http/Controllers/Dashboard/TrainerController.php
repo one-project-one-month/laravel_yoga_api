@@ -3,40 +3,45 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Helpers\ApiResponse;
+use App\Http\Resources\Dashboard\TrainerResource;
 use Illuminate\Http\Request;
 use App\Models\TrainerDetail;
 use App\Models\User;
+use Illuminate\Support\Facades\Validator;
 
 class TrainerController extends Controller
 {
+    use ApiResponse;
     public function index()
     {
-        $trainers = TrainerDetail::with('trainer:id,name,email')->get();
+        $trainers = TrainerDetail::with('trainer:id,full_name,email')->get();
 
-        return response()->json([
-            'success' => true,
-            'data' => $trainers
-        ]);
+        return $this->successResponse('Trainer retrieved successfully.', TrainerResource::collection($trainers), 200);
     }
 
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'trainer_id' => 'required|exists:users,id',
             'bio' => 'required|string',
-            'description' => 'required|string',
-            'salary' => 'required|numeric|min:0',
-            'branch_location' => 'required|string|max:255',
+            'universityName' => 'required|string',
+            'degree' => 'required',
+            'city' => 'required',
+            'startDate' => 'required',
+            'endDate' => 'required',
+            'salary' => 'nullable|numeric|min:0',
+            'branch_location' => 'nullable|string|max:255',
         ]);
+
+        if ($validator->fails()) {
+            return $this->errorResponse($validator->errors(), 422);
+        }
 
         $trainerDetail = TrainerDetail::create($request->all());
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Trainer profile created successfully',
-            'data' => $trainerDetail
-        ], 201);
+        return $this->successResponse('Trainer created successfully.', new TrainerResource($trainerDetail), 201);
     }
 
 
@@ -44,26 +49,28 @@ class TrainerController extends Controller
     {
         $trainer = TrainerDetail::find($id);
 
-        if (! $trainer) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Trainer not found'
-            ], 404);
+        if (!$trainer) {
+            return $this->errorResponse('Trainer not found.', 404);
         }
 
-        $request->validate([
-            'bio' => 'sometimes|string',
-            'description' => 'sometimes|string',
-            'salary' => 'sometimes|numeric|min:0',
-            'branch_location' => 'sometimes|string|max:255',
+        $validator = Validator::make($request->all(), [
+            'trainer_id' => 'required|exists:users,id',
+            'bio' => 'required|string',
+            'universityName' => 'required|string',
+            'degree' => 'required',
+            'city' => 'required',
+            'startDate' => 'required',
+            'endDate' => 'required',
+            'salary' => 'nullable|numeric|min:0',
+            'branch_location' => 'nullable|string|max:255',
         ]);
+
+        if ($validator->fails()) {
+            return $this->errorResponse($validator->errors(), 422);
+        }
 
         $trainer->update($request->all());
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Trainer profile updated successfully',
-            'data' => $trainer
-        ]);
+        return $this->successResponse('Trainer updated successfully.', new TrainerResource($trainer), 200);
     }
 }

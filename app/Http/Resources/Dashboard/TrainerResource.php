@@ -17,6 +17,15 @@ class TrainerResource extends JsonResource
         return [
             'id' => $this->id,
             'trainerId' => $this->trainer_id,
+            'trainer' => new UserResource($this->whenLoaded('trainer')),
+            'bio' => $this->bio,
+            'universityName' => $this->university_name,
+            'degree' => $this->degree,
+            'city' => $this->city,
+            'startDate' => $this->start_date,
+            'endDate' => $this->end_date,
+            'salary' => $this->salary,
+            'branchLocation' => $this->branch_location,
             'createdAt' => $this->created_at,
             'updatedAt' => $this->updated_at
         ];
