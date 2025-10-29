@@ -76,7 +76,21 @@ This document lists **all API endpoints**, **assigned modules**, and **developer
 
 ---
 
-## 5️⃣ Notes for Developers
+## 5️⃣ Payment Method Management
+
+**Models:** `Payment`  
+**Responsibilities:** Manage payment information and User payment history
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET    | /api/payments | List all payment |
+| POST   | /api/payments | Create payment information |
+| PUT    | /api/payments/{id} | Update payment information |
+| DELETE | /api/payments/{id} | Delete payment information |
+
+---
+
+## 6️⃣ Notes for Developers
 
 - **Authentication**: Dev 1 implements JWT or Sanctum or Spatie for all protected routes.
 - **Role-based access**: Use middleware to protect endpoints by role (`admin`, `trainer`, `student`).
@@ -88,7 +102,7 @@ This document lists **all API endpoints**, **assigned modules**, and **developer
 
 ---
 
-## 6️⃣ Branching & Git Commit Guidelines
+## 7️⃣ Branching & Git Commit Guidelines
 
 ### Branch Naming
 - `feature/users` → User & Role Management  
@@ -111,7 +125,7 @@ This document lists **all API endpoints**, **assigned modules**, and **developer
 
 ---
 
-## 7️⃣ Summary Table
+## 8️⃣ Summary Table
 
 | Developer | Module | Models | Main API Endpoints |
 |-----------|--------|--------|------------------|

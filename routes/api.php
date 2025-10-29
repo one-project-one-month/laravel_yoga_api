@@ -38,7 +38,7 @@ Route::prefix('v1/')->group(function () {
         Route::resource('users', UserController::class)->only('store', 'show', 'update', 'index');
 
         //role route
-        Route::get('/roles', [RoleController::class, 'index']);
+        Route::get('roles', [RoleController::class, 'index']);
 
         //payment route
         Route::resource('payments', PaymentController::class);
@@ -47,10 +47,10 @@ Route::prefix('v1/')->group(function () {
         Route::apiResource('appointments', AppointmentController::class);
 
         //trainer route
-        Route::apiResource('/trainers', TrainerController::class);
+        Route::apiResource('trainers', TrainerController::class);
 
         //testimonials route
-        Route::apiResource('/testimonials', TestimonialController::class);
+        Route::apiResource('testimonials', TestimonialController::class);
 
         //subscription
         Route::resource('subscriptions', SubscriptionController::class);
@@ -59,10 +59,10 @@ Route::prefix('v1/')->group(function () {
         // Route::resource('/subscriptionUsers', SubscriptionUserController::class)->only(['index', 'update']);
 
         //lesson type route
-        Route::resource('/lesson-types', LessonTypeController::class);
+        Route::resource('lesson-types', LessonTypeController::class);
 
         //lesson route
-        Route::resource('/lessons', LessonController::class);
+        Route::resource('lessons', LessonController::class);
     });
 
     //Trainer
