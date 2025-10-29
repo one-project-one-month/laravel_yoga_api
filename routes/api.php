@@ -16,6 +16,7 @@ use App\Http\Controllers\Dashboard\AppointmentController;
 use App\Http\Controllers\Dashboard\TestimonialController;
 use App\Http\Controllers\Dashboard\SubscriptionController;
 
+//aaa
 //Public route
 Route::post('v1/register', [AuthController::class, 'register']);
 Route::post('v1/login', [AuthController::class, 'login']);
