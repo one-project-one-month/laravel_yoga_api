@@ -9,13 +9,16 @@ use App\Http\Controllers\Api\VerifyEmailController;
 use App\Http\Controllers\Dashboard\LessonController;
 use App\Http\Controllers\Dashboard\PaymentController;
 use App\Http\Controllers\Dashboard\TrainerController;
+use App\Http\Controllers\Dashboard\LessonTrainerController;
 use App\Http\Controllers\Api\ForgetPasswordController;
 use App\Http\Controllers\Dashboard\LessonTypeController;
 use App\Http\Controllers\Client\PaymentHistoryController;
 use App\Http\Controllers\Dashboard\AppointmentController;
 use App\Http\Controllers\Dashboard\TestimonialController;
 use App\Http\Controllers\Dashboard\SubscriptionController;
+use App\Http\Controllers\Dashboard\Controller;
 
+//aaa
 //Public route
 Route::post('v1/register', [AuthController::class, 'register']);
 Route::post('v1/login', [AuthController::class, 'login']);
@@ -38,7 +41,7 @@ Route::prefix('v1/')->group(function () {
         Route::resource('users', UserController::class)->only('store', 'show', 'update', 'index');
 
         //role route
-        Route::get('roles', [RoleController::class, 'index']);
+        Route::get('/roles', [RoleController::class, 'index']);
 
         //payment route
         Route::resource('payments', PaymentController::class);
@@ -47,10 +50,10 @@ Route::prefix('v1/')->group(function () {
         Route::apiResource('appointments', AppointmentController::class);
 
         //trainer route
-        Route::apiResource('trainers', TrainerController::class);
+        Route::apiResource('/trainers', TrainerController::class);
 
         //testimonials route
-        Route::apiResource('testimonials', TestimonialController::class);
+        Route::apiResource('/testimonials', TestimonialController::class);
 
         //subscription
         Route::resource('subscriptions', SubscriptionController::class);
@@ -59,10 +62,14 @@ Route::prefix('v1/')->group(function () {
         // Route::resource('/subscriptionUsers', SubscriptionUserController::class)->only(['index', 'update']);
 
         //lesson type route
-        Route::resource('lesson-types', LessonTypeController::class);
+        Route::resource('/lesson-types', LessonTypeController::class);
+
+        //lessontrainer route
+        Route::resource('/lesson-trainers', LessonTrainerController::class);
+
 
         //lesson route
-        Route::resource('lessons', LessonController::class);
+        Route::resource('/lessons', LessonController::class);
     });
 
     //Trainer
