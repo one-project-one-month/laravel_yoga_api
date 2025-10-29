@@ -3,25 +3,30 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Helpers\ApiResponse;
+use App\Http\Resources\Dashboard\TestimonialResource;
 use Illuminate\Http\Request;
 use App\Models\Testimonial;
+use Illuminate\Support\Facades\Validator;
 
 class TestimonialController extends Controller
 {
+    use ApiResponse;
     public function index()
     {
-        $testimonials = Testimonial::with('user:id,name,email')->latest()->get();
+        $testimonials = Testimonial::with('user:id,full_name,email')->latest()->get();
 
-        return response()->json([
-            'success' => true,
-            'data' => $testimonials
-        ], 200);
+        return $this->successResponse('Testimonial retrieved successfully.', TestimonialResource::collection($testimonials), 200);
     }
     public function store(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'comment' => 'required|string|max:500',
         ]);
+
+        if ($validator->fails()) {
+            return $this->errorResponse($validator->errors(), 422);
+        }
 
         // Create testimonial for the authenticated user
         $testimonial = Testimonial::create([
@@ -29,10 +34,6 @@ class TestimonialController extends Controller
             'comment' => $request->comment,
         ]);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Testimonial created successfully',
-            'data' => $testimonial->load('user:id,name,email'),
-        ], 201);
+        return $this->successResponse('Testimonial created successfully', new TestimonialResource($testimonial), 201);
     }
 }

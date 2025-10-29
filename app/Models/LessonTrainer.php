@@ -12,4 +12,8 @@ class LessonTrainer extends Model
     protected $table = 'lesson_trainer';
     protected $fillable = ['trainer_id', 'lesson_type_id'];
     public $timestamps = true;
+    // public function trainer()
+    // {
+    //     return $this->belongsTo(User::class);
+    // }
 }
