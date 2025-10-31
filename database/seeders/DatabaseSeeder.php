@@ -11,7 +11,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             RoleSeeder::class,
-            AppointmentSeeder::class,
         ]);
 
         \App\Models\User::create([
@@ -24,12 +23,20 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::create([
             'full_name' => "Alice",
             'email' => "alice@gmail.com",
-            'password' => Hash::make('alice123456'),
+            'password' => Hash::make('Alice123456'),
             'role_id' => 2
+        ]);
+
+        \App\Models\User::create([
+            'full_name' => "Julia",
+            'email' => "julia@gmail.com",
+            'password' => Hash::make('Julia123456'),
+            'role_id' => 3
         ]);
 
         \App\Models\User::factory(10)->create();
         \App\Models\LessonType::factory(5)->create();
+        \App\Models\Appointment::factory(10)->create();
         \App\Models\Subscription::factory(5)->create();
         \App\Models\Lesson::factory(20)->create();
         \App\Models\TrainerDetail::factory(5)->create();

@@ -7,7 +7,6 @@ use App\Http\Helpers\ApiResponse;
 use App\Http\Resources\Dashboard\TrainerResource;
 use Illuminate\Http\Request;
 use App\Models\TrainerDetail;
-use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 
 class TrainerController extends Controller

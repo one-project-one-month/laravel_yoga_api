@@ -19,6 +19,7 @@ use App\Http\Controllers\Dashboard\SubscriptionController;
 use App\Http\Controllers\Client\UserSubscriptionController;
 use App\Http\Controllers\Dashboard\LessonTrainerController;
 use App\Http\Controllers\Dashboard\AdminSubscriptionController;
+use App\Http\Controllers\Client\AppointmentController as ClientAppointmentController;
 
 //aaa
 //Public route
@@ -36,35 +37,31 @@ Route::get('v1/auth/{provider}/redirect', [SocialLoginController::class, 'redire
 
 Route::get('v1/auth/{provider}/callback', [SocialLoginController::class, 'callback']);
 
-//Admin route only
-Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
-    Route::get('v1/users', [UserController::class, 'index']);
-});
 
-//Admin & Trainer route
 Route::prefix('v1/')->group(function () {
 
-    Route::middleware(['auth:sanctum', 'role:admin,trainer'])->group(function () {
+    //Admin route only
+    Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
         //user route
-        Route::resource('users', UserController::class)->only('store', 'show', 'update');
+        Route::resource('users', UserController::class);
 
         //role route
         Route::get('roles', [RoleController::class, 'index']);
+    });
 
+    //Admin & Trainer route
+    Route::middleware(['auth:sanctum', 'role:admin,trainer'])->group(function () {
         //payment route
         Route::resource('payments', PaymentController::class);
 
         //appointment route
-        Route::apiResource('appointments', AppointmentController::class);
+        Route::apiResource('appointments', AppointmentController::class)->only('index', 'update', 'destroy');
 
         //trainer route
         Route::apiResource('trainers', TrainerController::class);
 
-        //testimonials route
-        Route::apiResource('testimonials', TestimonialController::class);
-
         //subscription
-        Route::resource('subscriptions', SubscriptionController::class);
+        Route::resource('subscriptions', SubscriptionController::class)->only('store', 'update', 'destroy');
 
         //subscription user
         Route::resource('subscription-users', AdminSubscriptionController::class);
@@ -77,17 +74,39 @@ Route::prefix('v1/')->group(function () {
         Route::delete('lesson-trainers/{id}', [LessonTrainerController::class, 'unassign']);
 
         //lesson route
-        Route::resource('lessons', LessonController::class);
+        Route::resource('lessons', LessonController::class)->only('update', 'destroy');
 
         //food route
         Route::resource('foods', FoodController::class);
     });
 
-    //Student route
+    //Admin Trainer Student
+    Route::middleware(['auth:sanctum', 'role:admin,trainer,student'])->group(function () {
+        //lesson route
+        Route::apiResource('lessons', LessonController::class)->only('index', 'show');
+
+        //testimonials route
+        Route::apiResource('testimonials', TestimonialController::class)->only('index');
+
+        //subscription
+        Route::resource('subscriptions', SubscriptionController::class)->only('index');
+    });
+
+
+    //Student only
     Route::middleware(['auth:sanctum', 'role:student'])->group(function () {
         //subscription route
         Route::get('/users/{id}/subscriptions', [UserSubscriptionController::class, 'index']);
         Route::post('/users/{id}/subscriptions', [UserSubscriptionController::class, 'store']);
+
+        //testimonials route
+        Route::apiResource('testimonials', TestimonialController::class)->only('store');
+
+        //appointment route
+        Route::post('users/{id}/appointments/create', [ClientAppointmentController::class, 'create']);
+        Route::get('users/{id}/appointments/history', [ClientAppointmentController::class, 'history']);
+
+
     });
 });
 

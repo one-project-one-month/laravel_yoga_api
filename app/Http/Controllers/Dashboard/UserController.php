@@ -44,12 +44,12 @@ class UserController extends Controller
                 'email' => 'required|email|unique:users|max:255',
                 'password' => 'required|min:6|regex:/[0-9]/|regex:/[a-zA-Z]/',
                 'address' => 'required',
-                'profile' => 'required',
+                'profile' => 'required|mimes:jpg,png,jpeg,heic,svg',
                 'dateOfBirth' => 'required|date',
                 'placeOfBirth' => 'required',
                 'weight' => 'required',
-                'ph_no_telegram' => 'required|numeric|digits_between:7,15',
-                'ph_no_whatsapp' => 'required|numeric|digits_between:7,15',
+                'telegramPh' => 'required|numeric|digits_between:7,15',
+                'whatsappPh' => 'required|numeric|digits_between:7,15',
             ]
         );
 
@@ -77,7 +77,7 @@ class UserController extends Controller
                 'place_of_birth' => $request->placeOfBirth,
                 'weight' => $request->weight,
                 'ph_no_telegram' => $request->telegramPh,
-                'ph_no_whatsapp' => $request->whatsappPH,
+                'ph_no_whatsapp' => $request->whatsappPh,
                 'daily_routine_for_weekly' => $request->dailyRoutine,
                 'special_request' => $request->specialRequest,
             ]);

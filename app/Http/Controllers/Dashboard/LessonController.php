@@ -36,7 +36,7 @@ class LessonController extends Controller
 
         if ($user->role_id == 3) {
             $activeLesson = $user->subscriptions()
-                        ->wherePivot('status', 'Active')
+                        ->wherePivot('status', 'active')
                         ->wherePivot('end_date', '>=', now())
                         ->pluck('lesson_type_id');
 

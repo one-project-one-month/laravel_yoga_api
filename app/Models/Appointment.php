@@ -12,8 +12,9 @@ class Appointment extends Model
 
     protected $fillable = [
         'user_id',
-        'trainer_id',
         'appointment_date',
+        'appointment_time',
+        'appointment_type',
         'appointment_fees',
         'meet_link',
         'is_approved',
@@ -21,24 +22,13 @@ class Appointment extends Model
     ];
 
     protected $casts = [
-        'appointment_date' => 'datetime',
+        'appointment_date' => 'date',
         'appointment_fees' => 'decimal:2',
-        'is_approved' => 'boolean',
         'is_completed' => 'boolean',
     ];
 
-    public function member()
+    public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
-    }
-
-    public function admin()
-    {
-        return $this->belongsTo(User::class, 'admin_id');
-    }
-
-    public function trainer()
-    {
-        return $this->belongsTo(User::class, 'trainer_id');
     }
 }

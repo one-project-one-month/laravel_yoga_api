@@ -9,12 +9,12 @@ return new class extends Migration {
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('admin_id')->constrained('users');
-            $table->foreignId('trainer_id')->constrained('users');
-            $table->dateTime('appointment_date');
-            $table->decimal('appointment_fees', 10, 2);
-            $table->string('meet_link');
-            $table->boolean('is_approved')->default(false);
+            $table->date('appointment_date');
+            $table->time('appointment_time');
+            $table->string('appointment_type');
+            $table->decimal('appointment_fees', 10, 2)->default("0");
+            $table->string('meet_link')->nullable();
+            $table->string('is_approved')->default("pending");
             $table->boolean('is_completed')->default(false);
             $table->timestamps();
         });
