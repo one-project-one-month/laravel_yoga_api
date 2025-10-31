@@ -7,7 +7,6 @@ use App\Models\SubscriptionUser;
 use App\Http\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Dashboard\AdminSubscriptionResource;
-use Illuminate\Http\Resources\Json\PaginatedResourceResponse;
 
 class AdminSubscriptionController extends Controller
 {
