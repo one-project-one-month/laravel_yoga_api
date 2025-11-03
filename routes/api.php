@@ -20,6 +20,7 @@ use App\Http\Controllers\Client\UserSubscriptionController;
 use App\Http\Controllers\Dashboard\LessonTrainerController;
 use App\Http\Controllers\Dashboard\AdminSubscriptionController;
 use App\Http\Controllers\Client\AppointmentController as ClientAppointmentController;
+use App\Http\Controllers\Client\TestimonialController as ClientTestimonialController;
 
 //aaa
 //Public route
@@ -78,6 +79,9 @@ Route::prefix('v1/')->group(function () {
 
         //food route
         Route::resource('foods', FoodController::class);
+
+        //testimonials route
+        Route::apiResource('testimonials', TestimonialController::class)->only( 'destroy');
     });
 
     //Admin Trainer Student
@@ -100,13 +104,12 @@ Route::prefix('v1/')->group(function () {
         Route::post('/users/{id}/subscriptions', [UserSubscriptionController::class, 'store']);
 
         //testimonials route
-        Route::apiResource('testimonials', TestimonialController::class)->only('store');
+        Route::post('testimonials', [ClientTestimonialController::class, 'store']);
+        Route::delete('testimonials/{userId}/{id}', [ClientTestimonialController::class, 'destroy']);
 
         //appointment route
         Route::post('users/{id}/appointments/create', [ClientAppointmentController::class, 'create']);
         Route::get('users/{id}/appointments/history', [ClientAppointmentController::class, 'history']);
-
-
     });
 });
 
