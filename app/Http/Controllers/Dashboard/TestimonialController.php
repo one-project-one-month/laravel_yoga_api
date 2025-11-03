@@ -5,35 +5,38 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
 use App\Http\Resources\Dashboard\TestimonialResource;
-use Illuminate\Http\Request;
 use App\Models\Testimonial;
-use Illuminate\Support\Facades\Validator;
 
 class TestimonialController extends Controller
 {
     use ApiResponse;
+
+    /**
+     * GET /api/v1/testimonials
+     * List all testimonials
+     */
     public function index()
     {
         $testimonials = Testimonial::with('user:id,full_name,email')->latest()->get();
 
         return $this->successResponse('Testimonial retrieved successfully.', TestimonialResource::collection($testimonials), 200);
     }
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'comment' => 'required|string|max:500',
-        ]);
 
-        if ($validator->fails()) {
-            return $this->errorResponse($validator->errors(), 422);
+    /**
+     * DELETE /api/v1/testimonials/{id}
+     * Delete testimonial
+     */
+    public function destroy($id)
+    {
+        $testimonial = Testimonial::find($id);
+
+        if (!$testimonial) {
+            return $this->errorResponse('Testimonial not found.', 404);
         }
 
-        // Create testimonial for the authenticated user
-        $testimonial = Testimonial::create([
-            'user_id' => $request->user()->id,
-            'comment' => $request->comment,
-        ]);
+        $testimonial->delete();
 
-        return $this->successResponse('Testimonial created successfully', new TestimonialResource($testimonial), 201);
+        return $this->successResponse('Testimonial deleted successfully.', null, 204);
     }
+
 }
