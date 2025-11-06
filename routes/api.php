@@ -26,6 +26,7 @@ use App\Http\Controllers\Client\TestimonialController as ClientTestimonialContro
 //Public route
 Route::post('v1/register', [AuthController::class, 'register']);
 Route::post('v1/login', [AuthController::class, 'login']);
+Route::post('/v1/refresh', [AuthController::class, 'refresh']);
 Route::post('/v1/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('v1/forget-password', [ForgetPasswordController::class, 'sendOtp']);
 Route::post('v1/resend-otp', [ForgetPasswordController::class, 'resendOtp']);

@@ -14,13 +14,21 @@ class AuthResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
+        $data = [
             'user' => [
                 'id' => $this['user']->id,
-                'fullName' => $this['user']->full_name, //change user_name to name
+                'fullName' => $this['user']->full_name,
                 'email' => $this['user']->email,
             ],
-            'token' => $this['token']
+            'token' => $this['token'] ?? $this['accessToken'] ?? null,
         ];
+
+        if (isset($this['refreshToken'])) {
+            $data['refresh_token'] = $this['refreshToken'];
+        } elseif (isset($this['refresh_token'])) {
+            $data['refresh_token'] = $this['refresh_token'];
+        }
+
+        return $data;
     }
 }

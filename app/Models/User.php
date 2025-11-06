@@ -33,6 +33,8 @@ class User extends Authenticatable
         'provider',
         'provider_id',
         'provider_token',
+        'refresh_token',
+        'refresh_token_expires_at',
         'daily_routine_for_weekly',
         'special_request'
     ];
@@ -47,6 +49,7 @@ class User extends Authenticatable
         'date_of_birth' => 'date',
         'start_date' => 'date',
         'end_date' => 'date',
+        'refresh_token_expires_at' => 'datetime',
     ];
 
     protected $attributes = [

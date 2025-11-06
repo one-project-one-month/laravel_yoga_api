@@ -18,7 +18,7 @@ class AdminSubscriptionController extends Controller
      */
     public function index() {
         $subUser = SubscriptionUser::with(['user', 'subscription'])
-                ->paginate(config('pagnation.perPage'));
+                ->paginate(config('pagination.perPage'));
 
         return $this->successResponse('Successfully', $this->buildPaginatedResourceResponse(AdminSubscriptionResource::class, $subUser), 200);
     }
