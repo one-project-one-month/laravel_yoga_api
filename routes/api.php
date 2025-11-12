@@ -1,28 +1,27 @@
 <?php
 
-
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\SocialLoginController;
-use App\Http\Controllers\Dashboard\FoodController;
-use App\Http\Controllers\Dashboard\RoleController;
-use App\Http\Controllers\Dashboard\UserController;
-use App\Http\Controllers\Api\VerifyEmailController;
-use App\Http\Controllers\Dashboard\LessonController;
-use App\Http\Controllers\Dashboard\PaymentController;
-use App\Http\Controllers\Dashboard\TrainerController;
 use App\Http\Controllers\Api\ForgetPasswordController;
-use App\Http\Controllers\Dashboard\LessonTypeController;
-use App\Http\Controllers\Dashboard\AppointmentController;
-use App\Http\Controllers\Dashboard\TestimonialController;
-use App\Http\Controllers\Dashboard\SubscriptionController;
-use App\Http\Controllers\Client\UserSubscriptionController;
-use App\Http\Controllers\Dashboard\LessonTrainerController;
-use App\Http\Controllers\Dashboard\AdminSubscriptionController;
+use App\Http\Controllers\Api\VerifyEmailController;
 use App\Http\Controllers\Client\AppointmentController as ClientAppointmentController;
 use App\Http\Controllers\Client\TestimonialController as ClientTestimonialController;
+use App\Http\Controllers\Client\UserSubscriptionController;
+use App\Http\Controllers\Dashboard\AdminSubscriptionController;
+use App\Http\Controllers\Dashboard\AppointmentController;
+use App\Http\Controllers\Dashboard\FoodController;
+use App\Http\Controllers\Dashboard\LessonController;
+use App\Http\Controllers\Dashboard\LessonTrainerController;
+use App\Http\Controllers\Dashboard\LessonTypeController;
+use App\Http\Controllers\Dashboard\PaymentController;
+use App\Http\Controllers\Dashboard\RoleController;
+use App\Http\Controllers\Dashboard\SubscriptionController;
+use App\Http\Controllers\Dashboard\TestimonialController;
+use App\Http\Controllers\Dashboard\TrainerController;
+use App\Http\Controllers\Dashboard\UserController;
+use App\Http\Controllers\SocialLoginController;
+use Illuminate\Support\Facades\Route;
 
-//Public route
+// Public route
 Route::post('v1/register', [AuthController::class, 'register']);
 Route::post('v1/login', [AuthController::class, 'login']);
 Route::post('/v1/refresh', [AuthController::class, 'refresh']);
@@ -38,78 +37,74 @@ Route::get('v1/auth/{provider}/redirect', [SocialLoginController::class, 'redire
 
 Route::get('v1/auth/{provider}/callback', [SocialLoginController::class, 'callback']);
 
-
 Route::prefix('v1/')->group(function () {
-
-    //Admin route only
+    // Admin route only
     Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
-        //user route
+        // user route
         Route::resource('users', UserController::class);
 
-        //trainer route
+        // trainer route
         Route::apiResource('trainers', TrainerController::class);
 
-        //role route
+        // role route
         Route::get('roles', [RoleController::class, 'index']);
     });
 
-    //Admin & Trainer route
+    // Admin & Trainer route
     Route::middleware(['auth:sanctum', 'role:admin,trainer'])->group(function () {
-        //payment route
+        // payment route
         Route::resource('payments', PaymentController::class);
 
-        //appointment route
+        // appointment route
         Route::apiResource('appointments', AppointmentController::class)->only('index', 'update', 'destroy');
 
-        //subscription
+        // subscription
         Route::resource('subscriptions', SubscriptionController::class)->only('store', 'update', 'destroy');
 
-        //subscription user
+        // subscription user
         Route::resource('subscription-users', AdminSubscriptionController::class);
 
-        //lesson type route
+        // lesson type route
         Route::resource('lesson-types', LessonTypeController::class);
 
-        //lessontrainer route
+        // lessontrainer route
         Route::post('lesson-trainers', [LessonTrainerController::class, 'assign']);
         Route::delete('lesson-trainers/{id}', [LessonTrainerController::class, 'unassign']);
 
-        //lesson route
+        // lesson route
         Route::resource('lessons', LessonController::class)->only('update', 'destroy', 'store');
 
-        //food route
+        // food route
         Route::resource('foods', FoodController::class);
 
-        //testimonials route
-        Route::apiResource('testimonials', TestimonialController::class)->only( 'destroy');
+        // testimonials route
+        Route::apiResource('testimonials', TestimonialController::class)->only('destroy');
     });
 
-    //Admin Trainer Student
+    // Admin Trainer Student
     Route::middleware(['auth:sanctum', 'role:admin,trainer,student'])->group(function () {
-        //lesson route
+        // lesson route
         Route::apiResource('lessons', LessonController::class)->only('index', 'show');
 
-        //testimonials route
+        // testimonials route
         Route::apiResource('testimonials', TestimonialController::class)->only('index');
 
-        //subscription
+        // subscription
         Route::resource('subscriptions', SubscriptionController::class)->only('index');
     });
 
-
-    //Student only
+    // Student only
     Route::middleware(['auth:sanctum', 'role:student'])->group(function () {
-        //subscription route
+        // subscription route
         Route::get('/users/{id}/subscriptions', [UserSubscriptionController::class, 'index']);
-        Route::post('/users/{id}/subscriptions', [UserSubscriptionController::class, 'store']);
+        Route::post('/users/{id}/{subscriptionId}/subscriptions', [UserSubscriptionController::class, 'store']);
 
-        //testimonials route
-        Route::post('testimonials', [ClientTestimonialController::class, 'store']);
-        Route::delete('testimonials/{id}/delete', [ClientTestimonialController::class, 'destroy']);
+        // testimonials route
+        Route::post('testimonials/{id}/create', [ClientTestimonialController::class, 'store']);
+        Route::delete('testimonials/{id}/{testimonialId}/delete', [ClientTestimonialController::class, 'destroy']);
 
-        //appointment route
+        // appointment route
         Route::post('users/{id}/appointments/create', [ClientAppointmentController::class, 'create']);
         Route::get('users/{id}/appointments/history', [ClientAppointmentController::class, 'history']);
     });
 });
-
