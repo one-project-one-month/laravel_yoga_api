@@ -2,10 +2,36 @@
 
 namespace App\Http\Resources\Client;
 
-use Illuminate\Http\Request;
 use App\Http\Resources\Dashboard\UserResource;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Request;
 
+/**
+ * @OA\Schema(
+ *     schema="ClientTestimonialResource",
+ *     title="Client Teatimonial Resource",
+ *     description="Client-facing Testimonial model representation",
+ *     @OA\Property(
+ *         property="id",
+ *         type="integer",
+ *         example=1
+ *     ),
+ *     @OA\Property(
+ *         property="userId",
+ *         type="integer",
+ *         example=1
+ *     ),
+ *     @OA\Property(
+ *         property="user",
+ *         ref="#/components/schemas/UserResource"
+ *     ),
+ *     @OA\Property(
+ *         property="comment",
+ *         type="string",
+ *         example="Minima id quidem eius reiciendis hic aut expedita velit quod et aut molestias."
+ *     ),
+ * )
+ */
 class TestimonialResource extends JsonResource
 {
     /**

@@ -20,4 +20,9 @@ class Food extends Model
         'description',
         'rating'
     ];
+
+    public function user()
+    {
+        return $this->hasOne(User::class);
+    }
 }
