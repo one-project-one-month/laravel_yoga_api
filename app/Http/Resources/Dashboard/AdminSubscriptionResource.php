@@ -2,9 +2,26 @@
 
 namespace App\Http\Resources\Dashboard;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Request;
 
+/**
+ * @OA\Schema(
+ * schema="AdminSubscriptionResource",
+ * title="Admin Subscription Resource",
+ * description="SubscriptionUsers model representation",
+ * @OA\Property(property="id", type="integer", description="User Subscription ID", example=1),
+ * @OA\Property(property="userId", type="integer", description="User ID of the subscription", example=3),
+ * @OA\Property(property="user", ref="#/components/schemas/UserResource"),
+ * @OA\Property(property="subscriptionId", type="integer", description="Subscription ID", example="1"),
+ * @OA\Property(property="subscription", ref="#/components/schemas/SubscriptionResource"),
+ * @OA\Property(property="status", type="string", description="Wait for admin approve", example="pending"),
+ * @OA\Property(property="startDate", type="date", description="Start date for user's subscription", example="01-01-20xx"),
+ * @OA\Property(property="endDate", type="date", description="End date for user's subscription", example="01-01-20xx"),
+ * @OA\Property(property="createdAt", type="string", format="date-time", description="Creation timestamp", example="2023-10-28T12:00:00.000000Z"),
+ * @OA\Property(property="updatedAt", type="string", format="date-time", description="Last update timestamp", example="2023-10-28T12:00:00.000000Z")
+ * )
+ */
 class AdminSubscriptionResource extends JsonResource
 {
     /**
@@ -21,6 +38,8 @@ class AdminSubscriptionResource extends JsonResource
             'subscriptionId' => $this->subscription_id,
             'subscription' => new SubscriptionResource($this->whenLoaded('subscription')),
             'status' => $this->status,
+            'startDate' => $this->start_date,
+            'endDate' => $this->end_date,
             'createdAt' => $this->created_at,
             'updatedAt' => $this->updated_at,
         ];

@@ -2,27 +2,90 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\User;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
-use App\Http\Helpers\ApiResponse;
-use Laravel\Sanctum\HasApiTokens;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Notifications\Notifiable;
+use App\Http\Helpers\ApiResponse;
 use App\Http\Resources\Auth\AuthResource;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Http\Request;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
+use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * @OA\Info(
+ *  title="Unlock Wealth Resort API",
+ *  version="1.0.0",
+ *  description="API documentation for Unlock Wealth Resort",
+ * )
+ * @OA\Components(
+ * @OA\SecurityScheme(
+ *  securityScheme="bearerAuth",
+ *  type="http",
+ *  scheme="bearer",
+ *  bearerFormat="JWT",
+ *  description="Enter token in format (Bearer <token>)",
+ *  in="header",
+ *  name="Authorization"
+ *  )
+ * )
+ * @OA\Security(
+ * security={
+ * {"bearerAuth": {}}
+ * }
+ * )
+ */
 class AuthController extends Controller
 {
     use ApiResponse, HasApiTokens, HasFactory, Notifiable;
 
     /**
-     * POST /api/v1/register
-     * Register new user
+     * @OA\Post(
+     * path="/api/v1/register",
+     * summary="Register a new user and return tokens",
+     * description="Register user and receive an access token and a refresh token.",
+     * tags={"Authentication"},
+     * @OA\RequestBody(
+     * required=true,
+     * @OA\JsonContent(
+     * required={"fullName", "email","password", "confirmPassword"},
+     * @OA\Property(property="fullName", type="string", example="John Doe"),
+     * @OA\Property(property="email", type="string", format="email", example="johndoe@gmail.com"),
+     * @OA\Property(property="password", type="string", format="password", example="John123456"),
+     * @OA\Property(property="confirmpassword", type="string", format="password", example="John123456"),
+     * )
+     * ),
+     * @OA\Response(
+     * response=200,
+     * description="Register successful",
+     * @OA\JsonContent(
+     * @OA\Property(property="message", type="string", example="Register success"),
+     * @OA\Property(
+     * property="data",
+     * type="object",
+     * @OA\Property(
+     * property="user",
+     * type="object",
+     * @OA\Property(property="id", type="integer", example=1),
+     * @OA\Property(property="name", type="string", example="John Doe"),
+     * @OA\Property(property="email", type="string", format="email", example="johndoe@gmail.com")
+     * ),
+     * @OA\Property(property="accessToken", type="string", example="1|aBcDeFgHiJkLmNoPqRsTuVwXyZ123456"),
+     * @OA\Property(
+     * property="note",
+     * type="string",
+     * example="The refresh token is stored in an httpOnly cookie named 'refreshToken'."
+     * )
+     * )
+     * )
+     * ),
+     * @OA\Response(response=422, description="Validation errors"),
+     * @OA\Response(response=500, description="Internal Sever errors"),
+     * )
      */
     public function register(Request $request)
     {
@@ -75,8 +138,48 @@ class AuthController extends Controller
     }
 
     /**
-     * POST /api/v1/login
-     * user login
+     * @OA\Post(
+     * path="/api/v1/login",
+     * summary="Login user and return tokens",
+     * description="Authenticate a user and receive an access token and a refresh token.",
+     * tags={"Authentication"},
+     * @OA\RequestBody(
+     * required=true,
+     * description="User credentials",
+     * @OA\JsonContent(
+     * required={"email","password"},
+     * @OA\Property(property="email", type="string", format="email", example="johndoe@gmail.com"),
+     * @OA\Property(property="password", type="string", format="password", example="John123456")
+     * )
+     * ),
+     * @OA\Response(
+     * response=200,
+     * description="Login successful",
+     * @OA\JsonContent(
+     * @OA\Property(property="message", type="string", example="Login success"),
+     * @OA\Property(
+     * property="data",
+     * type="object",
+     * @OA\Property(
+     * property="user",
+     * type="object",
+     * @OA\Property(property="id", type="integer", example=1),
+     * @OA\Property(property="name", type="string", example="John Doe"),
+     * @OA\Property(property="email", type="string", format="email", example="johndoe@gmail.com")
+     * ),
+     * @OA\Property(property="accessToken", type="string", example="1|aBcDeFgHiJkLmNoPqRsTuVwXyZ123456"),
+     * @OA\Property(
+     * property="note",
+     * type="string",
+     * example="The refresh token is stored in an httpOnly cookie named 'refreshToken'."
+     * )
+     * )
+     * )
+     * ),
+     * @OA\Response(response=401, description="Unauthorized - invalid password"),
+     * @OA\Response(response=404, description="User not found"),
+     * @OA\Response(response=422, description="Validation errors")
+     * )
      */
     public function login(Request $request)
     {
@@ -133,8 +236,40 @@ class AuthController extends Controller
     }
 
     /**
-     * POST /api/v1/refresh
-     * Refresh access token
+     * @OA\Post(
+     *     path="/api/v1/refresh",
+     *     summary="Refresh the access token",
+     *     description="Uses a refresh token stored in an httpOnly cookie to generate a new access token.",
+     *     tags={"Authentication"},
+     *     @OA\Parameter(
+     *         name="refreshToken",
+     *         in="cookie",
+     *         required=true,
+     *         description="Refresh token cookie",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Token refreshed successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="successful"),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 @OA\Property(
+     *                     property="user",
+     *                     type="object",
+     *                     @OA\Property(property="id", type="integer", example=1),
+     *                     @OA\Property(property="name", type="string", example="John Doe"),
+     *                     @OA\Property(property="email", type="string", format="email", example="johndoe@gmail.com")
+     *                 ),
+     *                 @OA\Property(property="accessToken", type="string", example="2|zYxWvUtSrQpOnMlKjIhGfEdCbA123456")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(response=401, description="Unauthorized - Invalid or expired refresh token"),
+     *     @OA\Response(response=422, description="Validation error - refresh_token is required")
+     * )
      */
     public function refresh(Request $request)
     {
@@ -192,8 +327,24 @@ class AuthController extends Controller
     }
 
     /**
-     * POST /api/v1/logout
-     * User logout
+     * @OA\Post(
+     * path="/api/v1/logout",
+     * summary="Logout user",
+     * description="Logs out the current authenticated user by invalidating their token.",
+     * tags={"Authentication"},
+     * security={{"bearerAuth":{}}},
+     * @OA\Response(
+     * response=200,
+     * description="Logout successful",
+     * @OA\JsonContent(
+     * @OA\Property(property="message", type="string", example="Logged out successfully")
+     * )
+     * ),
+     * @OA\Response(
+     * response=401,
+     * description="Unauthenticated"
+     * )
+     * )
      */
     public function logout(Request $request)
     {

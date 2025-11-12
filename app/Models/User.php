@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Food;
 use App\Models\Lesson;
 use App\Models\Role;
 use App\Models\Subscription;
@@ -65,14 +66,16 @@ class User extends Authenticatable
 
     public function lessons()
     {
-        return $this->belongsToMany(Lesson::class, 'lesson_user')
+        return $this
+            ->belongsToMany(Lesson::class, 'lesson_user')
             ->withPivot('is_completed')
             ->withTimestamps();
     }
 
     public function subscriptions()
     {
-        return $this->belongsToMany(Subscription::class, 'subscription_user')
+        return $this
+            ->belongsToMany(Subscription::class, 'subscription_user')
             ->withPivot('status', 'start_date', 'end_date')
             ->withTimestamps();
     }
@@ -85,5 +88,10 @@ class User extends Authenticatable
     public function trainerDetails()
     {
         return $this->hasOne(TrainerDetail::class, 'trainer_id');
+    }
+
+    public function food()
+    {
+        return $this->hasMany(Food::class);
     }
 }
