@@ -20,7 +20,7 @@ class AdminSubscriptionController extends Controller
 
     /**
      * @OA\Get(
-     * path="/api/v1/subscriptions-users",
+     * path="/api/v1/subscription-users",
      * summary="Get a list of users's subscriptions",
      * description="Returns a paginated list of all users's subscriptions.",
      * tags={"Admin Subscriptions"},
@@ -54,8 +54,27 @@ class AdminSubscriptionController extends Controller
     }
 
     /**
-     * GET /api/v1/subscription-users/{id}
-     * Show subscription user information
+     * @OA\Get(
+     * path="/api/v1/subscription-users/{id}",
+     * summary="Get a single user's subscription",
+     * description="Returns the details of a specific user's subscription by their ID.",
+     * tags={"Admin Subscriptions"},
+     * security={{"bearerAuth":{}}},
+     * @OA\Parameter(
+     * name="id",
+     * in="path",
+     * required=true,
+     * description="ID of the user's subscription",
+     * @OA\Schema(type="string")
+     * ),
+     * @OA\Response(
+     * response=200,
+     * description="User's subscription Fetched Successfully",
+     * @OA\JsonContent(ref="#/components/schemas/AdminSubscriptionResource")
+     * ),
+     * @OA\Response(response=404, description="User's subscription not found"),
+     * @OA\Response(response=401, description="Unauthenticated")
+     * )
      */
     public function show($id)
     {
