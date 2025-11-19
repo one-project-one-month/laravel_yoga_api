@@ -2,7 +2,7 @@ name: Deploy Laravel to AWS EC2
 
 on:
   push:
-    branches: [ "main" ]   # main branch commit push  auto deploy
+    branches: [ "main" ]      # main branch commit push  auto deploy
 
 jobs:
   deploy:
