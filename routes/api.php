@@ -40,9 +40,6 @@ Route::get('v1/auth/{provider}/callback', [SocialLoginController::class, 'callba
 Route::prefix('v1/')->group(function () {
     // Admin route only
     Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
-        // user route
-        Route::resource('users', UserController::class);
-
         // trainer route
         Route::apiResource('trainers', TrainerController::class);
 
@@ -83,6 +80,8 @@ Route::prefix('v1/')->group(function () {
 
     // Admin Trainer Student
     Route::middleware(['auth:sanctum', 'role:admin,trainer,student'])->group(function () {
+        // user route
+        Route::apiResource('users', UserController::class);
         // lesson route
         Route::apiResource('lessons', LessonController::class)->only('index', 'show');
 
