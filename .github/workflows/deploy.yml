@@ -31,6 +31,7 @@ jobs:
         with:
           host: ${{ secrets.HOST_DNS }}
           username: ubuntu
+          target: ${{ secrets.TARGET_DIR }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             echo "Deploying to PRODUCTION server..."
