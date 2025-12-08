@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ForgetPasswordController;
 use App\Http\Controllers\Api\VerifyEmailController;
 use App\Http\Controllers\Client\AppointmentController as ClientAppointmentController;
+use App\Http\Controllers\Client\FoodController as ClientFoodController;
 use App\Http\Controllers\Client\TestimonialController as ClientTestimonialController;
 use App\Http\Controllers\Client\UserSubscriptionController;
 use App\Http\Controllers\Dashboard\AdminSubscriptionController;
@@ -105,5 +106,9 @@ Route::prefix('v1/')->group(function () {
         // appointment route
         Route::post('users/{id}/appointments/create', [ClientAppointmentController::class, 'create']);
         Route::get('users/{id}/appointments/history', [ClientAppointmentController::class, 'history']);
+
+        // food route
+        Route::get('/users/{userId}/foods', [ClientFoodController::class, 'index']);
+        Route::get('/users/{userId}/foods/{id}', [ClientFoodController::class, 'show']);
     });
 });

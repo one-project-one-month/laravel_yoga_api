@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
 use App\Http\Resources\Dashboard\TrainerResource;
 use App\Models\TrainerDetail;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -48,9 +49,9 @@ class TrainerController extends Controller
      */
     public function index()
     {
-        $trainers = TrainerDetail::with('trainer:id,full_name,email')->get();
+        $trainers = TrainerDetail::with('trainer:id,full_name,email')->paginate(config('pagination.perPage'));
 
-        return $this->successResponse('Trainer retrieved successfully.', TrainerResource::collection($trainers), 200);
+        return $this->successResponse('Trainer retrieved successfully.', $this->buildPaginatedResourceResponse(TrainerResource::class, $trainers), 200);
     }
 
     /**
@@ -86,7 +87,7 @@ class TrainerController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'trainerId' => 'required|exists:users,id',
+            'email' => 'required|exists:users,email',
             'bio' => 'required|string',
             'universityName' => 'required|string',
             'degree' => 'required',
@@ -101,7 +102,17 @@ class TrainerController extends Controller
             return $this->errorResponse($validator->errors(), 422);
         }
 
-        $trainerDetail = TrainerDetail::create($request->all());
+        $trainerId = User::where('email', $request->email)->first()->id;
+
+        $trainerDetail = TrainerDetail::create([
+            'trainer_id' => $trainerId,
+            'bio' => $request->bio,
+            'university_name' => $request->universityName,
+            'degree' => $request->degree,
+            'city' => $request->city,
+            'start_date' => $request->startDate,
+            'end_date' => $request->endDate
+        ]);
 
         return $this->successResponse('Trainer created successfully.', new TrainerResource($trainerDetail), 201);
     }
@@ -152,7 +163,7 @@ class TrainerController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'trainerId' => 'required|exists:users,id',
+            'email' => 'required|exists:users,email',
             'bio' => 'required|string',
             'universityName' => 'required|string',
             'degree' => 'required',
@@ -167,7 +178,17 @@ class TrainerController extends Controller
             return $this->errorResponse($validator->errors(), 422);
         }
 
-        $trainer->update($request->all());
+        $trainerId = User::where('email', $request->email)->first()->id;
+
+        $trainer->update([
+            'trainer_id' => $trainerId,
+            'bio' => $request->bio,
+            'university_name' => $request->universityName,
+            'degree' => $request->degree,
+            'city' => $request->city,
+            'start_date' => $request->startDate,
+            'end_date' => $request->endDate
+        ]);
 
         return $this->successResponse('Trainer updated successfully.', new TrainerResource($trainer), 200);
     }

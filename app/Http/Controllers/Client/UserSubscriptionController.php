@@ -134,6 +134,8 @@ class UserSubscriptionController extends Controller
             return $this->errorResponse($validator->errors(), 422);
         }
 
+        $subscription = Subscription::where('id', $subscriptionId)->first();
+
         if (!$subscription) {
             return $this->errorResponse('Subscription not found!', 404);
         }
